@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>the part that would not part</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Bebas+Neue&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Gurmukhi:wght@400;700&family=Noto+Serif+Bengali:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+ --green:#0d5c3a;--green-dark:#083d27;--green-mid:#0f6b44;
+ --yellow:#f5c842;--red:#e8321a;--white:#f5f0e8;--cream:#fdf6e3;
+ --serif:'IM Fell English',Georgia,serif;
+ --display:'Bebas Neue',sans-serif;
+ --dev:'Noto Sans Devanagari',sans-serif;
+ --arab:'Noto Naskh Arabic',sans-serif;
+ --gur:'Noto Sans Gurmukhi',sans-serif;
+ --beng:'Noto Serif Bengali',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--green);color:var(--white);font-family:var(--serif);min-height:100vh;overflow-x:hidden;}
+ 
+/* ── LANGUAGE SWITCHER BAR ── */
+#lang-bar{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--green-dark);border-bottom:1px solid rgba(245,200,66,0.15);display:flex;align-items:center;gap:0.5rem;padding:0.35rem 2.5rem;font-size:0.72rem;}
+#lang-bar span{color:var(--yellow);opacity:0.6;letter-spacing:0.1em;text-transform:uppercase;font-family:var(--serif);}
+.lang-btn{background:none;border:1px solid rgba(245,200,66,0.25);color:var(--white);font-family:var(--serif);font-size:0.72rem;padding:0.2rem 0.7rem;cursor:pointer;transition:all 0.2s;opacity:0.7;}
+.lang-btn:hover,.lang-btn.active{background:var(--yellow);color:var(--green-dark);opacity:1;border-color:var(--yellow);}
+ 
+/* ── NAV ── */
+nav{position:fixed;top:28px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:var(--green);border-bottom:1px solid rgba(245,200,66,0.2);}
+.nav-logo{display:flex;align-items:center;gap:1rem;}
+.nav-circle{width:40px;height:40px;border:2px solid var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--yellow);}
+.nav-title{font-family:var(--serif);font-size:0.82rem;font-style:italic;color:var(--yellow);}
+.nav-tabs{display:flex;gap:0;}
+.nav-tab{font-family:var(--serif);font-style:italic;font-size:0.88rem;color:var(--white);padding:0.4rem 1.3rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;letter-spacing:0.02em;}
+.nav-tab:hover{color:var(--yellow);}
+.nav-tab.active{color:var(--yellow);border-bottom-color:var(--yellow);}
+ 
+/* ── SECTIONS ── */
+.section{display:none;padding-top:106px;}
+.section.active{display:block;}
+ 
+/* ── HERO ── */
+.hero{min-height:100vh;padding-top:106px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;pointer-events:none;}
+.hero-grid::before,.hero-grid::after{content:'';position:absolute;border:1px dashed rgba(245,200,66,0.12);}
+.hero-grid::before{top:0;bottom:0;left:25%;right:25%;border-left-width:1px;border-right-width:1px;border-top:none;border-bottom:none;}
+.hero-grid::after{left:0;right:0;top:33%;bottom:33%;border-top-width:1px;border-bottom-width:1px;border-left:none;border-right:none;}
+.hero-blob{position:absolute;width:52vw;height:52vw;max-width:680px;max-height:680px;background:var(--yellow);border-radius:60% 40% 50% 55%/45% 60% 40% 55%;top:50%;left:50%;transform:translate(-18%,-48%);z-index:0;}
+.hero-inner{position:relative;z-index:1;padding:5rem 2.5rem 3rem;min-height:calc(100vh - 106px);display:flex;flex-direction:column;justify-content:center;}
+.hero-dev{text-align:right;padding-right:2rem;margin-bottom:0.5rem;}
+.hero-dev span{font-family:var(--dev);font-size:clamp(1rem,2.2vw,1.6rem);color:var(--red);font-weight:700;}
+.hero-h1{text-align:center;padding:1.5rem 0;}
+.hero-h1 h1{font-family:var(--display);font-size:clamp(4.5rem,11vw,10.5rem);color:var(--red);line-height:0.88;letter-spacing:0.02em;text-transform:uppercase;}
+.hero-arab{padding-left:2rem;margin-top:0.5rem;}
+.hero-arab span{font-family:var(--arab);font-size:clamp(1rem,2.2vw,1.6rem);color:var(--red);font-weight:700;direction:rtl;display:block;}
+.hero-gur{padding:0.4rem 2.5rem;margin-top:0.75rem;}
+.hero-gur span{font-family:var(--gur);font-size:clamp(0.85rem,1.5vw,1.1rem);color:var(--yellow);opacity:0.75;display:block;line-height:1.9;letter-spacing:0.04em;}
+.hero-sub{margin-top:2.5rem;max-width:560px;}
+.hero-sub .sub-label{font-style:normal;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.6rem;display:block;}
+.hero-sub p{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--white);line-height:1.85;opacity:0.85;}
+.hero-enter{margin-top:3rem;display:flex;align-items:center;gap:1rem;cursor:pointer;}
+.hero-enter span{font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--yellow);opacity:0.7;}
+.hero-enter-line{width:55px;height:1px;background:var(--yellow);opacity:0.35;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero-dev{animation:fadeUp 0.7s ease 0.1s both}
+.hero-h1{animation:fadeUp 0.7s ease 0.25s both}
+.hero-arab{animation:fadeUp 0.7s ease 0.4s both}
+.hero-gur{animation:fadeUp 0.7s ease 0.5s both}
+.hero-sub{animation:fadeUp 0.7s ease 0.6s both}
+.hero-enter{animation:fadeUp 0.7s ease 0.75s both}
+ 
+/* ── ARCHIVE ── */
+.arc-wrap{padding:3.5rem 2.5rem;}
+.arc-head{margin-bottom:2.5rem;display:flex;align-items:baseline;gap:2rem;flex-wrap:wrap;}
+.arc-head h2{font-family:var(--display);font-size:clamp(2.2rem,4.5vw,3.8rem);color:var(--yellow);text-transform:uppercase;letter-spacing:0.05em;}
+.arc-note{font-family:var(--serif);font-style:italic;font-size:0.83rem;color:var(--white);opacity:0.45;max-width:380px;line-height:1.7;}
+.filter-row{display:flex;gap:0.6rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+.fbtn{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--white);background:none;border:1px solid rgba(255,255,255,0.22);padding:0.35rem 1.1rem;cursor:pointer;transition:all 0.2s;}
+.fbtn:hover,.fbtn.active{background:var(--yellow);color:var(--green-dark);border-color:var(--yellow);}
+ 
+/* GALLERY — borderless tiles */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.tile{position:relative;min-height:270px;padding:1.8rem;cursor:pointer;transition:transform 0.3s ease;overflow:hidden;}
+.tile:hover{transform:translateY(-3px);}
+.t-green{background:var(--green-mid);}
+.t-yellow{background:var(--yellow);}
+.t-red{background:var(--red);}
+.t-dark{background:var(--green-dark);}
+.t-cream{background:var(--cream);}
+.t-yellow .tc,.t-cream .tc{color:var(--green-dark);}
+.tc{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.t-type{font-family:var(--serif);font-size:0.68rem;letter-spacing:0.17em;text-transform:uppercase;opacity:0.55;margin-bottom:0.85rem;}
+.t-yellow .t-type,.t-cream .t-type{opacity:0.45;}
+.t-text{font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.78;flex:1;}
+.t-text.lg{font-size:clamp(1.05rem,1.6vw,1.35rem);}
+.t-lang{position:absolute;bottom:0.8rem;right:0.8rem;font-size:2.2rem;opacity:0.07;line-height:1;pointer-events:none;}
+.t-foot{margin-top:1.2rem;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;}
+.tile:hover .t-foot{opacity:0.5;}
+.t-yellow .t-foot,.t-cream .t-foot{color:var(--green-dark);}
+/* reveal */
+.t-reveal{position:absolute;inset:0;background:rgba(8,61,39,0.97);display:flex;flex-direction:column;justify-content:center;padding:1.8rem;transform:translateY(100%);transition:transform 0.38s cubic-bezier(0.16,1,0.3,1);z-index:2;}
+.tile:hover .t-reveal{transform:translateY(0);}
+.rv-label{font-size:0.67rem;letter-spacing:0.17em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.6rem;}
+.rv-author{font-family:var(--serif);font-style:italic;font-size:0.92rem;color:var(--white);opacity:0.9;line-height:1.5;}
+.rv-src{font-size:0.72rem;color:var(--white);opacity:0.38;margin-top:0.4rem;line-height:1.5;}
+/* gurmukhi strip */
+.gur-strip{writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--gur);font-size:0.78rem;color:var(--yellow);opacity:0.65;letter-spacing:0.06em;position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);z-index:1;}
+/* span helpers */
+.wide{grid-column:span 2;}
+.tall{grid-row:span 2;min-height:560px;}
+@media(max-width:900px){.gallery{grid-template-columns:repeat(2,1fr)}.wide{grid-column:span 1}.tall{grid-row:span 1;min-height:270px}}
+@media(max-width:580px){.gallery{grid-template-columns:1fr}.nav-tabs{display:none}}
+ 
+/* ── TIMELINE ── */
+.tl-wrap{padding:3.5rem 2.5rem;}
+.tl-head{margin-bottom:1.5rem;}
+.tl-head h2{font-family:var(--display);font-size:clamp(2.2rem,4.5vw,3.8rem);color:var(--yellow);text-transform:uppercase;letter-spacing:0.05em;}
+.tl-head p{font-family:var(--serif);font-style:italic;font-size:0.88rem;color:var(--white);opacity:0.45;margin-top:0.4rem;max-width:580px;line-height:1.7;}
+.tl-key{display:flex;gap:2.5rem;margin-bottom:3rem;padding:0.8rem 0;border-top:1px solid rgba(245,200,66,0.15);border-bottom:1px solid rgba(245,200,66,0.15);flex-wrap:wrap;}
+.k-item{display:flex;align-items:center;gap:0.55rem;font-family:var(--serif);font-style:italic;font-size:0.78rem;color:var(--white);opacity:0.65;}
+.k-dot{width:9px;height:9px;flex-shrink:0;}
+.k-dot.st{background:var(--yellow);}
+.k-dot.te{background:var(--red);}
+.tl-entries{display:flex;flex-direction:column;}
+.tl-entry{display:grid;grid-template-columns:110px 1px 1fr 1fr;gap:0 2rem;align-items:stretch;min-height:160px;}
+.t-yr{display:flex;align-items:flex-start;padding-top:1.5rem;font-family:var(--display);font-size:1.5rem;color:var(--yellow);letter-spacing:0.05em;opacity:0.65;line-height:1.15;}
+.t-spine{display:flex;flex-direction:column;align-items:center;}
+.t-spine-line{width:1px;flex:1;background:rgba(245,200,66,0.15);}
+.t-spine-dot{width:8px;height:8px;border-radius:50%;margin-top:1.8rem;flex-shrink:0;}
+.t-spine-dot.st{background:var(--yellow);}
+.t-spine-dot.te{background:var(--red);}
+.t-state,.t-test{padding:1.5rem 0 2rem;border-bottom:1px solid rgba(245,200,66,0.07);}
+.t-sl,.t-tl{font-size:0.63rem;letter-spacing:0.17em;text-transform:uppercase;margin-bottom:0.5rem;display:block;}
+.t-sl{color:var(--yellow);opacity:0.75;}
+.t-tl{color:var(--red);opacity:0.85;}
+.t-state p{font-family:var(--serif);font-size:0.88rem;line-height:1.75;color:var(--white);opacity:0.7;}
+.t-state .law-tag{display:inline-block;background:rgba(245,200,66,0.12);border:1px solid rgba(245,200,66,0.25);font-size:0.68rem;font-style:normal;letter-spacing:0.08em;padding:0.15rem 0.55rem;margin-bottom:0.6rem;color:var(--yellow);font-family:var(--serif);}
+.t-state .act-text{font-family:var(--serif);font-style:italic;font-size:0.8rem;color:var(--yellow);opacity:0.65;border-left:2px solid rgba(245,200,66,0.3);padding-left:0.75rem;margin:0.75rem 0;line-height:1.6;}
+.t-test blockquote{font-family:var(--serif);font-style:italic;font-size:0.9rem;line-height:1.78;color:var(--white);opacity:0.9;}
+.t-test cite{display:block;font-size:0.68rem;font-style:normal;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-top:0.65rem;opacity:0.75;}
+@media(max-width:900px){.tl-entry{grid-template-columns:70px 1px 1fr}.t-test{display:none}}
+ 
+/* ── ABOUT ── */
+.ab-wrap{padding:5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.ab-left{border-left:3px solid var(--yellow);padding-left:2rem;}
+.ab-left h2{font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,2.2vw,1.85rem);color:var(--yellow);margin-bottom:1.5rem;line-height:1.35;font-weight:normal;}
+.ab-left p{font-family:var(--serif);font-size:0.95rem;line-height:1.9;color:var(--white);opacity:0.8;margin-bottom:1rem;}
+.th-card{background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.18);padding:1.3rem;margin-bottom:0.85rem;}
+.th-who{font-family:var(--serif);font-style:italic;font-size:0.75rem;color:var(--yellow);letter-spacing:0.04em;margin-bottom:0.45rem;display:block;}
+.th-card blockquote{font-family:var(--serif);font-style:italic;font-size:0.9rem;line-height:1.7;color:var(--white);opacity:0.88;}
+@media(max-width:900px){.ab-wrap{grid-template-columns:1fr;gap:2rem}}
+ 
+/* ── FOOTER ── */
+footer{background:var(--green-dark);padding:3rem 2.5rem;border-top:1px solid rgba(245,200,66,0.12);display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;}
+.fc h4{font-family:var(--serif);font-style:italic;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.85rem;opacity:0.75;}
+.fc a,.fc p{font-family:var(--serif);font-size:0.78rem;line-height:1.85;color:var(--white);opacity:0.42;text-decoration:none;display:block;}
+.fc a:hover{opacity:0.85;color:var(--yellow);}
+.fb{background:var(--green-dark);padding:1.2rem 2.5rem;border-top:1px solid rgba(245,200,66,0.07);display:flex;justify-content:space-between;}
+.fb p{font-family:var(--serif);font-style:italic;font-size:0.73rem;color:var(--white);opacity:0.25;}
+@media(max-width:900px){footer{grid-template-columns:1fr;gap:1.5rem}}
+ 
+/* ── AUDIO PANEL ── */
+.audio-section{background:var(--green-dark);padding:2.5rem 2.5rem;border-top:1px solid rgba(245,200,66,0.15);border-bottom:1px solid rgba(245,200,66,0.15);margin:2rem 0;}
+.audio-head{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.5rem);color:var(--yellow);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem;}
+.audio-note{font-family:var(--serif);font-style:italic;font-size:0.82rem;color:var(--white);opacity:0.4;margin-bottom:2rem;}
+.audio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;}
+.audio-card{background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);padding:1.4rem;}
+.audio-card-title{font-family:var(--serif);font-style:italic;font-size:0.9rem;color:var(--yellow);margin-bottom:0.3rem;}
+.audio-card-sub{font-family:var(--serif);font-size:0.75rem;color:var(--white);opacity:0.4;margin-bottom:1rem;line-height:1.5;}
+.audio-card iframe{width:100%;border:none;border-radius:0;}
+.audio-link{display:inline-block;margin-top:0.75rem;font-family:var(--serif);font-style:italic;font-size:0.78rem;color:var(--yellow);text-decoration:none;opacity:0.7;border-bottom:1px solid rgba(245,200,66,0.3);padding-bottom:1px;}
+.audio-link:hover{opacity:1;}
+</style>
+</head>
+<body>
+ 
+<!-- LANGUAGE BAR -->
+<div id="lang-bar">
+ <span>language /</span>
+ <button class="lang-btn active" onclick="setLang('en',this)">English</button>
+ <button class="lang-btn" onclick="setLang('ur',this)">اردو</button>
+ <button class="lang-btn" onclick="setLang('hi',this)">हिन्दी</button>
+ <button class="lang-btn" onclick="setLang('pa',this)">ਪੰਜਾਬੀ</button>
+</div>
+ 
+<!-- NAV -->
+<nav>
+ <div class="nav-logo">
+ <div class="nav-circle" onclick="scrollTop()">☰</div>
+ <span class="nav-title">whose body? whose border?</span>
+ </div>
+ <div class="nav-tabs">
+ <button class="nav-tab active" onclick="show('archive',this)" data-i18n="nav-archive">the archive</button>
+ <button class="nav-tab" onclick="show('timeline',this)" data-i18n="nav-timeline">the timeline</button>
+ <button class="nav-tab" onclick="show('listen',this)" data-i18n="nav-listen">listen</button>
+ <button class="nav-tab" onclick="show('about',this)" data-i18n="nav-about">about</button>
+ </div>
+</nav>
+ 
+<!-- ══ HERO ══ -->
+<div class="hero">
+ <div class="hero-grid"></div>
+ <div class="hero-blob"></div>
+ <div class="hero-inner">
+ <div class="hero-dev"><span>वह भाग जो अलग नहीं होता</span></div>
+ <div class="hero-h1"><h1>the part that<br>does not part</h1></div>
+ <div class="hero-arab"><span>الجزء الذي لا يتجزأ</span></div>
+ <div class="hero-gur">
+ <span>ਅੱਜ ਆਖਾਂ ਵਾਰਸ ਸ਼ਾਹ ਨੂੰ, ਕਿਤੋਂ ਕਬਰਾਂ ਵਿੱਚੋਂ ਬੋਲ</span>
+ <span style="opacity:0.4;font-size:0.78rem;">Today I invoke Waris Shah — speak from within your grave — Amrita Pritam, 1947</span>
+ </div>
+ <div class="hero-sub">
+ <span class="sub-label" data-i18n="hero-label">whose body? whose border?</span>
+ <p data-i18n="hero-desc">An unbordered archive of women and the 1947 Partition of British India into India and Pakistan. You will encounter grief, silence, and survival before any religious or national marker is revealed.</p>
+ </div>
+ <div class="hero-enter" onclick="show('archive', document.querySelector('.nav-tab'))">
+ <span data-i18n="hero-enter">enter the archive</span>
+ <div class="hero-enter-line"></div>
+ </div>
+ </div>
+</div>
+ 
+<!-- ══ ARCHIVE SECTION ══ -->
+<div id="section-archive" class="section active">
+<div class="arc-wrap">
+ <div class="arc-head">
+ <h2 data-i18n="arc-title">the collection</h2>
+ <p class="arc-note" data-i18n="arc-note">Hover any tile to reveal attribution. Communal identity — whether a voice is Hindu, Muslim, or Sikh; Indian or Pakistani — is disclosed last. You encounter the person before the category.</p>
+ </div>
+ <div class="filter-row">
+ <button class="fbtn active" onclick="filter('all',this)" data-i18n="f-all">all</button>
+ <button class="fbtn" onclick="filter('silence',this)" data-i18n="f-silence">silence</button>
+ <button class="fbtn" onclick="filter('the body',this)" data-i18n="f-body">the body</button>
+ <button class="fbtn" onclick="filter('home',this)" data-i18n="f-home">home</button>
+ <button class="fbtn" onclick="filter('survival',this)" data-i18n="f-survival">survival</button>
+ <button class="fbtn" onclick="filter('inheritance',this)" data-i18n="f-inheritance">what is passed down</button>
+ <button class="fbtn" onclick="filter('love',this)" data-i18n="f-love">love across the border</button>
+ </div>
+ 
+ <div class="gallery" id="gallery">
+ 
+ <!-- 1. Amrita Pritam — wide, gurmukhi strip -->
+ <div class="tile t-red wide" data-theme="silence">
+ <div class="tc">
+ <span class="t-type">poetry — 1947</span>
+ <p class="t-text lg">"Today I invoke Waris Shah — speak from within your grave,<br>and turn, today, to a new page in the book of love.<br><br>One daughter of Punjab wept, and you wrote a story of lament.<br>Today a million daughters weep, calling out to you, Waris Shah."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="gur-strip">ਅੱਜ ਆਖਾਂ ਵਾਰਸ ਸ਼ਾਹ ਨੂੰ — ਕਿਤੋਂ ਕਬਰਾਂ ਵਿੱਚੋਂ ਬੋਲ — ਤੇ ਅੱਜ ਕਿਤਾਬ-ਏ-ਇਸ਼ਕ ਦਾ ਕੋਈ ਅਗਲਾ ਵਰਕਾ ਫੋਲ</div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Amrita Pritam — "Ajj Aakhaan Waris Shah Nu" (1947)</span>
+ <span class="rv-src">Written in Punjabi on a train from Dehradun to Delhi during the riots. Addressed across the new border to the 18th-century Sufi poet Waris Shah. Circulated by women on both sides of the Partition line. Trans. Khushwant Singh (1982).</span>
+ </div>
+ </div>
+ 
+ <!-- 2. Archive testimony — tall -->
+ <div class="tile t-dark tall" data-theme="home">
+ <div class="tc">
+ <span class="t-type">oral testimony</span>
+ <p class="t-text">"We had neighbors for forty years. And then one morning, they were gone.<br><br>Or we were gone.<br><br>I still don't know which."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">source</span>
+ <span class="rv-author">The 1947 Partition Archive — anonymized testimony</span>
+ <span class="rv-src">1947partitionarchive.org/stories — an oral history project that has recorded over 10,000 survivor testimonies.</span>
+ </div>
+ </div>
+ 
+ <!-- 3. Warsan Shire -->
+ <div class="tile t-green" data-theme="the body">
+ <div class="tc">
+ <span class="t-type">poetry — contemporary</span>
+ <p class="t-text">"later that night<br>i held an atlas in my lap<br>ran my fingers across the whole world<br>and whispered: where does it hurt?<br><br>it answered<br>everywhere<br>everywhere<br>everywhere."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-lang" style="font-family:var(--arab);">أين يؤلم</div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Warsan Shire — untitled</span>
+ <span class="rv-src">Somali-British poet. Her work on displacement, the body, and belonging converges with this archive's framework across geographies of violence.</span>
+ </div>
+ </div>
+ 
+ <!-- 4. Butalia — "What is there to say" -->
+ <div class="tile t-yellow" data-theme="silence">
+ <div class="tc">
+ <span class="t-type">oral history</span>
+ <p class="t-text">"What is there to say?<br><br>We survived.<br><br>That is the story."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-lang" style="font-family:var(--dev);">बचे</div>
+ <div class="t-reveal">
+ <span class="rv-label">collected by</span>
+ <span class="rv-author">Urvashi Butalia — The Other Side of Silence (2000)</span>
+ <span class="rv-src">Duke University Press. Butalia notes: "Silence, I had begun to realize, was not the absence of speech. It was a form of resistance."</span>
+ </div>
+ </div>
+ 
+ <!-- 5. Manto — Toba Tek Singh -->
+ <div class="tile t-dark" data-theme="the body">
+ <div class="tc">
+ <span class="t-type">literary prose — 1955</span>
+ <p class="t-text">"Behind barbed wire, was Hindustan. Here, behind other barbed wire, was Pakistan.<br><br>In between, on a piece of earth that had no name, lay Toba Tek Singh."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Saadat Hasan Manto — "Toba Tek Singh" (1955, trans. Khalid Hasan)</span>
+ <span class="rv-src">Written in Urdu. The story's protagonist, Bishan Singh, refuses to be "recovered" to either nation-state. He dies in no man's land. The earth that had no name.</span>
+ </div>
+ </div>
+ 
+ <!-- 6. Archive — cloth -->
+ <div class="tile t-green" data-theme="inheritance">
+ <div class="tc">
+ <span class="t-type">oral testimony</span>
+ <p class="t-text">"My mother never talked about what happened at the border.<br><br>But she never threw away a single piece of cloth.<br><br>Not one."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">source</span>
+ <span class="rv-author">The 1947 Partition Archive — anonymized testimony</span>
+ <span class="rv-src">1947partitionarchive.org/stories</span>
+ </div>
+ </div>
+ 
+ <!-- 7. Ismat Chughtai — wide -->
+ <div class="tile t-cream wide" data-theme="home">
+ <div class="tc">
+ <span class="t-type">prose poem</span>
+ <p class="t-text lg">"The roots do not ask which side of the border the water comes from.<br>I belong to the earth that was divided — but the earth did not agree to it."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Ismat Chughtai — "Roots"</span>
+ <span class="rv-src">Chughtai was tried for obscenity in 1944 for "Lihaaf." She wrote unflinchingly about women's interiority and desire at a time when both were criminalized.</span>
+ </div>
+ </div>
+ 
+ <!-- 8. Fatimah Asghar -->
+ <div class="tile t-red" data-theme="survival">
+ <div class="tc">
+ <span class="t-type">contemporary poetry — 2018</span>
+ <p class="t-text lg">"partition me all you want<br><br>i'll still be whole"</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Fatimah Asghar — "If They Come for Us" (2018)</span>
+ <span class="rv-src">Pakistani-American poet. Partition as diaspora inheritance: "i am not indian / i am not pakistani / i am kashmiri / i am muslim." poets.org/poem/if-they-come-us</span>
+ </div>
+ </div>
+ 
+ <!-- 9. Faiz -->
+ <div class="tile t-dark" data-theme="survival">
+ <div class="tc">
+ <span class="t-type">poetry — August 1947</span>
+ <p class="t-text">"This light, smeared and spotted —<br>this night-bitten dawn —<br><br>this is not the dawn we set out searching for."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-lang" style="font-family:var(--arab);">صبح آزادی</div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Faiz Ahmed Faiz — "Subh-e-Azadi" (Freedom's Dawn, August 1947)</span>
+ <span class="rv-src">Written in Urdu and published the month of independence. Faiz was present at Partition. Trans. Agha Shahid Ali.</span>
+ </div>
+ </div>
+ 
+ <!-- 10. Recovered — wide -->
+ <div class="tile t-green wide" data-theme="the body">
+ <div class="tc">
+ <span class="t-type">oral history</span>
+ <p class="t-text lg">"She had been 'recovered' three times — once by Pakistani soldiers, once by Indian soldiers, once by her own family.<br><br>'Each time,' she said, 'they told me I was being saved.'"</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">collected by</span>
+ <span class="rv-author">Urvashi Butalia — The Other Side of Silence (2000)</span>
+ <span class="rv-src">On the Indian government's Abducted Persons (Recovery and Restoration) Act, 1949, which returned women to their communities regardless of their own wishes. The women were not returned to themselves.</span>
+ </div>
+ </div>
+ 
+ <!-- 11. Mumtaz Shah Nawaz -->
+ <div class="tile t-yellow" data-theme="love">
+ <div class="tc">
+ <span class="t-type">literary prose — pre-1948</span>
+ <p class="t-text">"You are not merely you, and I'm not just I. We represent two parts of a great people. Two parts that must harmonize and pull together."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Mumtaz Shah Nawaz — The Heart Divided (1957, posthumous)</span>
+ <span class="rv-src">Pakistani writer and politician (1912–1948). She died in the Partition-era plane crash of 1948 and did not survive to see the country her book anticipated. The novel was published nine years after her death.</span>
+ </div>
+ </div>
+ 
+ <!-- 12. A Thin Wall -->
+ <div class="tile t-dark" data-theme="love">
+ <div class="tc">
+ <span class="t-type">documentary testimony</span>
+ <p class="t-text">"She used to send me recipes.<br><br>That was how we stayed connected.<br><br>Through food."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">source</span>
+ <span class="rv-author">A Thin Wall (dir. Maneesha Taneja, documentary)</span>
+ <span class="rv-src">Two women — one Hindu, one Muslim — separated by Partition, reconnect decades later through correspondence and then in person. IMDB tt4651472.</span>
+ </div>
+ </div>
+ 
+ <!-- 13. Kavita Puri / Borderland -->
+ <div class="tile t-green" data-theme="inheritance">
+ <div class="tc">
+ <span class="t-type">oral testimony — diaspora</span>
+ <p class="t-text">"My children don't know. I never told them. I thought it would protect them.<br><br>Maybe it didn't."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">collected by</span>
+ <span class="rv-author">Kavita Puri — Borderland (BBC podcast) / Partition Voices (2019)</span>
+ <span class="rv-src">Puri collected testimonies from British South Asians whose Partition history had never been told publicly. "These are British stories. The people in them have British passports. But they have never been told."</span>
+ </div>
+ </div>
+ 
+ <!-- 14. Sidhwa -->
+ <div class="tile t-cream" data-theme="home">
+ <div class="tc">
+ <span class="t-type">literary prose — 1988</span>
+ <p class="t-text">"My world is suddenly full of countries I cannot enter."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Bapsi Sidhwa — Cracking India / Ice-Candy-Man (1988)</span>
+ <span class="rv-src">Pakistani novelist. The novel narrates Partition through the eyes of a young Parsee girl in Lahore. One of the first novels to center a woman's witness to the violence.</span>
+ </div>
+ </div>
+ 
+ <!-- 15. Butalia silence -->
+ <div class="tile t-dark" data-theme="silence">
+ <div class="tc">
+ <span class="t-type">oral history — methodology</span>
+ <p class="t-text">"Silence, I had begun to realize, was not the absence of speech.<br><br>It was a form of resistance."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Urvashi Butalia — The Other Side of Silence: Voices from the Partition of India (2000)</span>
+ <span class="rv-src">Duke University Press. Introduction. Butalia's methodology of listening — what she terms the "politics of silence" — is foundational to this archive.</span>
+ </div>
+ </div>
+ 
+ <!-- 16. Manto — Khol Do (content-warned) -->
+ <div class="tile t-red" data-theme="the body">
+ <div class="tc">
+ <span class="t-type">literary prose — 1948</span>
+ <p class="t-text">"Manto does not describe the violence. He describes what remains after it."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Saadat Hasan Manto — "Khol Do" (Open It, 1948) — content note: sexual violence</span>
+ <span class="rv-src">Three pages long. The story's final line — the doctor's instruction and a father's devastation — has been called one of the most powerful endings in Urdu literature. The violence is never shown directly. Only its remainder.</span>
+ </div>
+ </div>
+ 
+ <!-- 17. Menon & Bhasin -->
+ <div class="tile t-yellow" data-theme="the body">
+ <div class="tc">
+ <span class="t-type">feminist historiography — 1998</span>
+ <p class="t-text">"Violence against women was not incidental to Partition.<br><br>It was its logic."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">attributed to</span>
+ <span class="rv-author">Ritu Menon &amp; Kamla Bhasin — Borders and Boundaries (1998)</span>
+ <span class="rv-src">Rutgers University Press. Chapter 2. The foundational feminist historiography of Partition. "Women's bodies became the literal and symbolic ground on which the conflict was enacted."</span>
+ </div>
+ </div>
+ 
+ <!-- 18. Archive — same food -->
+ <div class="tile t-dark" data-theme="love">
+ <div class="tc">
+ <span class="t-type">oral testimony</span>
+ <p class="t-text">"We were the same people. We cooked the same food. We said different words for God<br><br>and they made us into different countries from that."</p>
+ <span class="t-foot">hover to reveal</span>
+ </div>
+ <div class="t-reveal">
+ <span class="rv-label">source</span>
+ <span class="rv-author">The 1947 Partition Archive — anonymized testimony</span>
+ <span class="rv-src">1947partitionarchive.org/stories</span>
+ </div>
+ </div>
+ 
+ </div><!-- /gallery -->
+</div><!-- /arc-wrap -->
+</div><!-- /section-archive -->
+ 
+<!-- ══ LISTEN SECTION ══ -->
+<div id="section-listen" class="section">
+<div style="padding:3.5rem 2.5rem;">
+ <div class="arc-head">
+ <h2 data-i18n="listen-title">listen</h2>
+ <p class="arc-note" data-i18n="listen-note">Audio testimony, poetry recitation, and documentary podcasts. The voice carries what the page cannot.</p>
+ </div>
+ 
+ <div class="audio-grid">
+ 
+ <div class="audio-card">
+ <div class="audio-card-title">Amrita Pritam — "Ajj Aakhaan Waris Shah Nu" (recitation)</div>
+ <div class="audio-card-sub">Spoken word recording of the 1947 Punjabi elegy. The original Gurmukhi script read aloud.</div>
+ <a class="audio-link" href="https://bagichablog.com/2022/02/27/ajj-aakhaan-waris-shah-nu-by-amrita-pritam/" target="_blank">Read full text with translation →</a>
+ </div>
+ 
+ <div class="audio-card">
+ <div class="audio-card-title">BBC Witness History: The Partition of India</div>
+ <div class="audio-card-sub">Survivor testimonies, recorded for BBC World Service. Some speaking publicly for the first time in their 80s and 90s.</div>
+ <a class="audio-link" href="https://www.bbc.co.uk/programmes/w3ct3bz3" target="_blank">Listen on BBC →</a>
+ </div>
+ 
+ <div class="audio-card">
+ <div class="audio-card-title">Borderland — Kavita Puri (BBC)</div>
+ <div class="audio-card-sub">Testimonies from British South Asians whose Partition stories had never been told publicly. Puri lets the silences speak.</div>
+ <a class="audio-link" href="https://www.theguardian.com/books/2019/jul/16/partition-voices-untold-british-stories-kavita-puri-review" target="_blank">Read Guardian review →</a>
+ </div>
+ 
+ <div class="audio-card">
+ <div class="audio-card-title">The 1947 Partition Archive — public stories</div>
+ <div class="audio-card-sub">Over 10,000 recorded oral testimonies from survivors across both countries. Video and audio available online.</div>
+ <a class="audio-link" href="https://www.1947partitionarchive.org/stories" target="_blank">Access the archive →</a>
+ </div>
+ 
+ <div class="audio-card">
+ <div class="audio-card-title">Spotify: The Partition</div>
+ <div class="audio-card-sub">Documentary podcast series on the events, politics, and human cost of 1947.</div>
+ <a class="audio-link" href="https://open.spotify.com/show/6kSFHlkO0KzAuzDobBjBwA" target="_blank">Listen on Spotify →</a>
+ </div>
+ 
+ <div class="audio-card">
+ <div class="audio-card-title">Museum of Art and Photography — Shared Histories, Unbordered Memories</div>
+ <div class="audio-card-sub">Video essays and exhibition content on Partition photography, material culture, and memory from MAP Bengaluru.</div>
+ <a class="audio-link" href="https://map-india.org/watch/shared-histories-unbordered-memories/" target="_blank">Watch at MAP →</a>
+ </div>
+ 
+ </div>
+ 
+ <div style="margin-top:3rem;border-top:1px solid rgba(245,200,66,0.12);padding-top:2rem;">
+ <h3 style="font-family:var(--display);font-size:1.8rem;color:var(--yellow);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:1rem;">film</h3>
+ <div class="audio-grid">
+ <div class="audio-card">
+ <div class="audio-card-title">A Thin Wall (dir. Maneesha Taneja)</div>
+ <div class="audio-card-sub">Two women — one Hindu, one Muslim — separated by Partition, reconnect decades later through correspondence and in person. Highest priority film in this archive.</div>
+ <a class="audio-link" href="https://www.imdb.com/title/tt4651472/" target="_blank">IMDB →</a>
+ </div>
+ <div class="audio-card">
+ <div class="audio-card-title">Viceroy's House (dir. Gurinder Chadha, 2017)</div>
+ <div class="audio-card-sub">The final months of British India through the eyes of those who served in the viceroy's household — below stairs and above.</div>
+ <a class="audio-link" href="https://www.imdb.com/title/tt4977530/" target="_blank">IMDB →</a>
+ </div>
+ <div class="audio-card">
+ <div class="audio-card-title">The Other Side of the Divide</div>
+ <div class="audio-card-sub">Documentary following a journey across the Partition border and the people still living with its consequences.</div>
+ <a class="audio-link" href="https://www.amazon.com/Other-Side-Divide-Journey-Pakistan/dp/0670091944" target="_blank">View →</a>
+ </div>
+ </div>
+ </div>
+</div>
+</div>
+ 
+<!-- ══ TIMELINE SECTION ══ -->
+<div id="section-timeline" class="section">
+<div class="tl-wrap">
+ <div class="tl-head">
+ <h2 data-i18n="tl-title">the parallel record</h2>
+ <p data-i18n="tl-note">What the state knew and produced — set alongside what the women experienced and knew. Legislative text and demographic record on the left. First-person testimony on the right. Two kinds of knowledge. One event.</p>
+ </div>
+ <div class="tl-key">
+ <div class="k-item"><div class="k-dot st"></div> state record — legislative, demographic, juridical</div>
+ <div class="k-item"><div class="k-dot te"></div> women's testimony — first-person, oral, literary</div>
+ </div>
+ 
+ <div class="tl-entries">
+ 
+ <!-- 1857 -->
+ <div class="tl-entry">
+ <div class="t-yr">1857</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">colonial precondition</span>
+ <span class="law-tag">Census Act, 1881 (precursor logic)</span>
+ <p>The British colonial census systematically enumerated the Indian population by religion for the first time, producing Hindu, Muslim, and Sikh as administratively discrete categories. These enumerated identities would become the basis for territorial allocation in 1947. The state created the categories through which it would later divide the bodies.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">the mark that preceded the wound</span>
+ <blockquote>"Before the 'body' there is the 'flesh,' that zero degree of social conceptualization that does not escape concealment under the brush of discourse."</blockquote>
+ <cite>— Hortense J. Spillers, "Mama's Baby, Papa's Maybe" (1987), Diacritics 17.2, p. 67</cite>
+ </div>
+ </div>
+ 
+ <!-- June 1947 -->
+ <div class="tl-entry">
+ <div class="t-yr">June 1947</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">colonial legislation</span>
+ <span class="law-tag">Indian Independence Act, 1947 (UK Parliament, 18 July 1947)</span>
+ <p>The British Parliament legislates the end of the British Raj and the creation of two independent dominions — the Union of India and the Dominion of Pakistan — to take effect on 15 August 1947. Lord Mountbatten accelerates the timeline from 1948 to 1947, compressing over a century of colonial administrative structure into weeks. The Act entrusts the territorial demarcation to the Boundary Commission.</p>
+ <div class="act-text">"His Majesty's Government... do hereby declare that as from the fifteenth day of August, nineteen hundred and forty-seven, two independent Dominions shall be set up in India, to be known respectively as India and Pakistan."</div>
+ <p>Cyril Radcliffe — a British lawyer who had never been to India, who barely knew the geography of Bengal and Punjab — is appointed chairman of both boundary commissions. <strong style="color:var(--yellow);font-weight:normal;">He is given five weeks.</strong> He leaves India before the boundary is published. He never speaks of it again. He does not accept his fee of Rs. 40,000.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">women's testimony — on the speed</span>
+ <blockquote>"They drew a line. They had five weeks to draw a line that would determine the fate of 88 million people. He had never been to India before. He left immediately after."</blockquote>
+ <cite>— Viceroy's House (dir. Gurinder Chadha, 2017) / historical record</cite>
+ </div>
+ </div>
+ 
+ <!-- 17 August 1947 -->
+ <div class="tl-entry">
+ <div class="t-yr">Aug 17, 1947</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">the line published</span>
+ <span class="law-tag">Radcliffe Line — published 17 August 1947, two days after independence</span>
+ <p>The Radcliffe Line divides British India into India, West Pakistan, and East Pakistan (present-day Bangladesh). It splits Punjab and Bengal — culturally, linguistically, and agriculturally integrated regions — along religious demographic lines drawn from outdated census data. The boundary is published two days after the countries have already declared independence. Millions have already begun moving. The violence has already begun.</p>
+ <p style="margin-top:0.75rem;">14 million people are displaced in the weeks surrounding the announcement — the largest forced migration in recorded history. Estimates of deaths range from 200,000 to 2 million. Between 75,000 and 100,000 women are abducted, raped, forcibly converted, or killed — many by members of their own families, in acts framed as protecting communal honor.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">Amrita Pritam — August 1947</span>
+ <blockquote>"Today fields are soaked with poison<br>and the ink of life has faded.<br>Someone has mixed venom into the five rivers of Punjab<br>and that same water now irrigates the soil."</blockquote>
+ <cite>— Amrita Pritam, "Ajj Aakhaan Waris Shah Nu" (1947), trans. Khushwant Singh</cite>
+ </div>
+ </div>
+ 
+ <!-- Nov 1948 — Inter-Dominion Agreement -->
+ <div class="tl-entry">
+ <div class="t-yr">Nov 1948</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">state legislation — India</span>
+ <span class="law-tag">Inter-Dominion Agreement, 11 November 1948</span>
+ <p>India and Pakistan sign an Inter-Dominion Agreement for the mutual "recovery and restoration" of abducted persons. The agreement classifies abducted women as recoverable communal property. It defines an "abducted person" as any Muslim woman left in India, or any Hindu or Sikh woman left in Pakistan, after 1 March 1947.</p>
+ <p style="margin-top:0.75rem;">Critically, the agreement pre-classifies all mixed Hindu-Muslim marriages formed after Partition as forced — regardless of the women's own testimony about their marriages, their children, their choices. The women's consent is not a legal variable.</p>
+ <div class="act-text">"Abducted person means a male child under the age of sixteen years or a female of any age who is a non-Muslim... and who on or after the 1st day of March, 1947, has been separated from his or her family and is found to be living with or under the control of any other individual or family." — Act No. 65 of 1949, Section 2(a)</div>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">testimony — on the recovery operation</span>
+ <blockquote>"Abducted women were recovered — but recovered for whom? Returned to the family, the community, the nation. Rarely to themselves."</blockquote>
+ <cite>— Ritu Menon &amp; Kamla Bhasin, Borders and Boundaries (Rutgers University Press, 1998), Ch. 2</cite>
+ </div>
+ </div>
+ 
+ <!-- 1949 — The Act -->
+ <div class="tl-entry">
+ <div class="t-yr">1949</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">state legislation — India</span>
+ <span class="law-tag">Abducted Persons (Recovery and Restoration) Act, No. 65 of 1949 (India)</span>
+ <p>Enacted 28 December 1949. The Act empowers police officers to enter any premises, arrest any woman they "believe or have reason to suspect" is an abducted person, and confine her in a government camp pending "restoration to her relatives." The Act explicitly removes the requirement for a warrant.</p>
+ <p style="margin-top:0.75rem;">Women who had formed new families — including women who had married, borne children, converted by choice — are forcibly removed from their current households. Children born of these unions are left behind when Muslim women are returned to Pakistan. Between January 1954 and September 1957, at least 860 such children are recorded as separated from their mothers in this way.</p>
+ <div class="act-text">"A police officer... may take charge of any person who he has reason to believe is an abducted person and deliver that person into the custody of the Camp Officer..." — Section 4, Act No. 65 of 1949</div>
+ <p style="margin-top:0.75rem;">The Act remains in force until 1960. Approximately 30,000 women are "recovered" on the Indian side; Pakistan's numbers are lower and contested.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">testimony — on recovery</span>
+ <blockquote>"She had been 'recovered' three times — once by Pakistani soldiers, once by Indian soldiers, once by her own family. Each time, they told her she was being saved."</blockquote>
+ <cite>— Collected by Urvashi Butalia, The Other Side of Silence (Duke University Press, 2000)</cite>
+ </div>
+ </div>
+ 
+ <!-- 1950 — Nehru-Liaquat Pact -->
+ <div class="tl-entry">
+ <div class="t-yr">1950</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">diplomatic legislation</span>
+ <span class="law-tag">Nehru–Liaquat Pact (Delhi Pact), 8 April 1950</span>
+ <p>Signed between Prime Minister Nehru of India and Prime Minister Liaquat Ali Khan of Pakistan following communal violence in Bengal. The Pact guarantees the rights of minorities in both countries and establishes bilateral machinery for the protection of citizens. Women and their property are treated as part of the demographic management problem the Pact addresses — their rights subordinated to the nation-state's interest in population stabilization.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">on what the state calls protection</span>
+ <blockquote>"The nation, in its very founding, required the sacrifice of women's bodies. This sacrifice was then rendered invisible."</blockquote>
+ <cite>— Urvashi Butalia, "Community, State and Gender," Economic and Political Weekly (jstor.org/stable/4399641)</cite>
+ </div>
+ </div>
+ 
+ <!-- 1951 — Pakistan Citizenship Act -->
+ <div class="tl-entry">
+ <div class="t-yr">1951</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">state legislation — Pakistan</span>
+ <span class="law-tag">Pakistan Citizenship Act, No. II of 1951 (enacted 13 April 1951)</span>
+ <p>Pakistan's first citizenship law codifies nationality primarily through patrilineal descent. Women cannot at the time of independence transmit their citizenship to their husbands or children in the same way as men. The Act contains a separate section on married women, reflecting the family as the site of national reproduction — where the woman's body is the instrument through which the nation replenishes itself. The kinship system becomes the mechanism of national transmission. The Act is shaped by the problem of Muslim refugees who had migrated from India — many of them women — and whose status needed to be defined as citizens of a nation some had never inhabited.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">on women and national transmission</span>
+ <blockquote>"The family is the site of reproduction of the nation and stands in a metonymic relationship to it. Both countries gave precedence to patrilineal descent and women could not at the time of Independence pass on their citizenship to their husbands or children in the same way as a man."</blockquote>
+ <cite>— Cabeiri Robinson, "Pakistan's Daughter-in-Law," Cairn.info (2014)</cite>
+ </div>
+ </div>
+ 
+ <!-- 1955 — India Citizenship Act -->
+ <div class="tl-entry">
+ <div class="t-yr">1955</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">state legislation — India</span>
+ <span class="law-tag">Citizenship Act, 1955 (India) — also: Abducted Persons Act expires</span>
+ <p>India's comprehensive Citizenship Act is passed, codifying jus soli citizenship (by birth). The Abducted Persons (Recovery and Restoration) Act's initial period expires in May 1955, then is extended until 1960 under the Continuance Bill of 1955. At its close, tens of thousands of women's trajectories remain unaccounted for in any official record. The state moves on. The women do not.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">Saadat Hasan Manto — 1955</span>
+ <blockquote>"Bishan Singh lay down in no man's land. There, behind barbed wire, was Hindustan. Here, behind other barbed wire, was Pakistan. In between, on a piece of earth that had no name, lay Toba Tek Singh."</blockquote>
+ <cite>— Saadat Hasan Manto, "Toba Tek Singh" (1955, trans. Khalid Hasan)</cite>
+ </div>
+ </div>
+ 
+ <!-- 1979 — Hudood Ordinance -->
+ <div class="tl-entry">
+ <div class="t-yr">1979</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">state legislation — Pakistan</span>
+ <span class="law-tag">Offence of Zina (Enforcement of Hudood) Ordinance, No. VII of 1979 (Pakistan)</span>
+ <p>Promulgated under General Zia ul-Haq's Islamization program. The Ordinance criminalizes zina (extramarital sex) and — crucially — classifies rape ("zina-bil-jabr," zina by force) as a <em>subset</em> of zina rather than a distinct crime. Prosecution of rape under hadd (Quranic punishment) requires four adult Muslim male eyewitnesses. The result: women who report rape become liable to prosecution for zina if they cannot produce four witnesses to the non-consensual nature of the intercourse. Thousands of women are imprisoned under the law for "honor" crimes. The Ordinance remains in force until partial reform under the Protection of Women Act, 2006.</p>
+ <div class="act-text">"A person is said to commit zina-bil-jabr if he or she has sexual intercourse with a woman or man... to whom he or she is not validly married, in circumstances which constitute rape." — Zina Ordinance, Section 6</div>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">on the law that names violation as consent</span>
+ <blockquote>"The laws rendered most sexual assault victims unable to seek redress through the criminal justice system, deeming them guilty of illegal sex rather than victims of unlawful violence."</blockquote>
+ <cite>— Human Rights Watch, "Pakistan: Reform Hudood Laws Now" (2006)</cite>
+ </div>
+ </div>
+ 
+ <!-- 2019 — CAA -->
+ <div class="tl-entry">
+ <div class="t-yr">2019</div>
+ <div class="t-spine"><div class="t-spine-dot st"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">state legislation — India</span>
+ <span class="law-tag">Citizenship (Amendment) Act, 2019 (India) — implemented March 2024</span>
+ <p>For the first time in independent India's history, a religious criterion is introduced into the naturalization process. The CAA fast-tracks citizenship for Hindus, Sikhs, Buddhists, Jains, Parsis, and Christians who fled Pakistan, Bangladesh, and Afghanistan before 31 December 2014 — while explicitly excluding Muslims. The Indian Home Ministry describes it as "compassionate and ameliorative legislation." Critics argue it institutionalizes the same communal grammar the Partition imposed: the Muslim body as always already belonging elsewhere.</p>
+ <p style="margin-top:0.75rem;">In conjunction with the proposed National Register of Citizens (NRC), the CAA risks rendering India's 200 million Muslims stateless if unable to document citizenship. In Assam, a citizenship screening process had already rendered over one million people stateless. On 15 December 2019, hundreds of Muslim women began a sit-in at Shaheen Bagh, Delhi, blocking a highway in protest. They remain there for 101 days. The government describes the protest as a security threat.</p>
+ <div class="act-text">"The Citizenship Amendment Act grants Indian nationality to Hindus, Sikhs, Buddhists, Jains, Parsis, and Christians who fled to Hindu-majority India due to religious persecution from Muslim-majority Afghanistan, Bangladesh and Pakistan before Dec. 31, 2014." — Reuters, March 2024</div>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">the grammar that did not end</span>
+ <blockquote>"Muslims, whose 'natural home,' they asserted, was now in Pakistan — as opposed to Hindus and Sikhs, who were 'Indian,' even though separated from the mainland..."</blockquote>
+ <cite>— Statelessness and Citizenship Review, "India's Citizenship Laws: A Longue Durée" (2022)</cite>
+ </div>
+ </div>
+ 
+ <!-- Now -->
+ <div class="tl-entry">
+ <div class="t-yr">1947–<br>now</div>
+ <div class="t-spine"><div class="t-spine-dot te"></div><div class="t-spine-line"></div></div>
+ <div class="t-state">
+ <span class="t-sl">ongoing</span>
+ <p>The colonial production of knowledge that marked certain bodies as always already suspect continues: in discriminatory citizenship legislation, in the racialization of South Asian Muslim bodies in diaspora, in policing of marriage and reproductive labor to maintain caste and communal purity, in the reproductive coercion placed on women to maintain community boundaries. The categories the Partition institutionalized are not historical residue. They are live structures. The body is still the border.</p>
+ </div>
+ <div class="t-test">
+ <span class="t-tl">Fatimah Asghar — 2018</span>
+ <blockquote>"partition me all you want<br>i'll still be whole"</blockquote>
+ <cite>— Fatimah Asghar, "If They Come for Us" (2018) — poets.org/poem/if-they-come-us</cite>
+ </div>
+ </div>
+ 
+ </div>
+</div>
+</div>
+ 
+<!-- ══ ABOUT SECTION ══ -->
+<div id="section-about" class="section">
+<div class="ab-wrap">
+ <div class="ab-left">
+ <h2 data-i18n="ab-quote">"The nation, in its very founding, required the sacrifice of women's bodies. This sacrifice was then rendered invisible."</h2>
+ <p data-i18n="ab-p1">This project takes the 1947 Partition of British India — the administrative division of a subcontinent into India and Pakistan along hastily drawn religious lines — as an onto-epistemological problem: who gets to produce knowledge about what happened, in whose name, and at whose expense?</p>
+ <p data-i18n="ab-p2">The archive is structured so that communal identity — whether a voice is Hindu or Muslim, Indian or Pakistani — is disclosed last. You encounter the person before the category. This is not a trick. It is a theoretical position: the refusal of the grammar through which the state sorted bodies into parts.</p>
+ <p data-i18n="ab-p3">Existing archival work — Urvashi Butalia's oral histories, Ritu Menon and Kamla Bhasin's testimonial collections — has been essential in recovering women's voices from the margins of nationalist historiography. But these projects largely present women already sorted: named, attributed, positioned within the communal categories the Partition itself produced. What this project refuses is that sorting — asking what becomes legible about shared experience when the state's grammar of differentiation is, even briefly, withheld.</p>
+ <p style="opacity:0.4;font-size:0.78rem;margin-top:2rem;">— Sahithi Medikondla. Sex, Gender, and Society. Dartmouth College, 2026.</p>
+ </div>
+ <div>
+ <div class="th-card">
+ <span class="th-who">Hortense J. Spillers — "Mama's Baby, Papa's Maybe: An American Grammar Book" (1987)</span>
+ <blockquote>"Before the 'body' there is the 'flesh,' that zero degree of social conceptualization that does not escape concealment under the brush of discourse, or the reflexes of iconography." — Diacritics 17.2, p. 67</blockquote>
+ </div>
+ <div class="th-card">
+ <span class="th-who">Nadera Shalhoub-Kevorkian — Security Theology, Surveillance and the Politics of Fear (Cambridge UP, 2015)</span>
+ <blockquote>"The production of knowledge about the colonized is itself a colonial act." / "Fear is not a feeling. It is a political technology."</blockquote>
+ </div>
+ <div class="th-card">
+ <span class="th-who">Urvashi Butalia — The Other Side of Silence (Duke UP, 2000)</span>
+ <blockquote>"Silence, I had begun to realize, was not the absence of speech. It was a form of resistance." / "These women were not passive victims. They were agents, negotiators, survivors — but the archive has rarely treated them as such."</blockquote>
+ </div>
+ <div class="th-card">
+ <span class="th-who">Ritu Menon &amp; Kamla Bhasin — Borders and Boundaries (Rutgers UP, 1998)</span>
+ <blockquote>"Violence against women was not incidental to Partition. It was its logic." / "The discourse of honor is always also a discourse of possession."</blockquote>
+ </div>
+ <div class="th-card">
+ <span class="th-who">Denise Ferreira da Silva — onto-epistemology</span>
+ <blockquote>Da Silva's onto-epistemological framework refuses the separation of being from knowing — asking how certain bodies are constituted as objects of knowledge rather than its producers. The women of Partition were not asked what they knew. They were what was known about.</blockquote>
+ </div>
+ </div>
+</div>
+</div>
+ 
+<!-- FOOTER -->
+<footer>
+ <div class="fc">
+ <h4>primary sources</h4>
+ <a href="https://www.1947partitionarchive.org/stories">The 1947 Partition Archive</a>
+ <a href="https://www.dukeupress.edu/the-other-side-of-silence">Butalia — The Other Side of Silence</a>
+ <a href="http://archiwum.pwsz.krosno.pl/gfx/pwszkrosno/pl/defaultaktualnosci/506/3/1/s10_menon_and_bhasin.pdf">Menon &amp; Bhasin — Borders and Boundaries</a>
+ <a href="https://poets.org/poem/if-they-come-us">Fatimah Asghar — If They Come for Us</a>
+ <a href="https://bagichablog.com/2022/02/27/ajj-aakhaan-waris-shah-nu-by-amrita-pritam/">Amrita Pritam — Ajj Aakhaan Waris Shah Nu</a>
+ <a href="https://www.jstor.org/stable/4399640">Menon &amp; Bhasin — "Recovery, Rupture, Resistance"</a>
+ </div>
+ <div class="fc">
+ <h4>legislative sources</h4>
+ <a href="https://www.casemine.com/act/in/5a979d8e4a93263ca60b7040">Abducted Persons Act, 1949 — full text</a>
+ <a href="https://www.pakistani.org/pakistan/legislation/zia_po_1979/ord7_1979.html">Zina Hudood Ordinance, 1979</a>
+ <a href="https://www.jstor.org/stable/4399641">Butalia — "Community, State and Gender"</a>
+ <a href="https://indiankanoon.org/doc/894396/">Indian Constituent Assembly Debates on citizenship</a>
+ <a href="https://www.hrw.org/news/2024/03/15/india-activates-discriminatory-citizenship-law">HRW — India CAA 2024</a>
+ <a href="https://statelessnessandcitizenshipreview.com/index.php/journal/article/download/265/181">CAA and the Partition's Long Shadow</a>
+ </div>
+ <div class="fc">
+ <h4>audio &amp; film</h4>
+ <a href="https://www.bbc.co.uk/programmes/w3ct3bz3">BBC Witness History: Partition of India</a>
+ <a href="https://open.spotify.com/show/6kSFHlkO0KzAuzDobBjBwA">The Partition — Spotify</a>
+ <a href="https://www.imdb.com/title/tt4651472/">A Thin Wall — IMDB</a>
+ <a href="https://map-india.org/watch/shared-histories-unbordered-memories/">MAP — Shared Histories, Unbordered Memories</a>
+ <a href="https://www.jstor.org/site/south-asia-open-archives/">Columbia South Asia Open Archive</a>
+ </div>
+</footer>
+<div class="fb">
+ <p>the part that would not part — an unbordered archive — whose body? whose border?</p>
+ <p>grief does not respect the border</p>
+</div>
+ 
+<script>
+// ── SECTION SWITCHING ──
+function show(name, btn) {
+ document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+ document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+ document.getElementById('section-' + name).classList.add('active');
+ if (btn) btn.classList.add('active');
+ window.scrollTo({top: document.querySelector('.hero').offsetHeight + 56, behavior:'smooth'});
+}
+function scrollTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+ 
+// ── GALLERY FILTER ──
+function filter(theme, btn) {
+ document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+ btn.classList.add('active');
+ document.querySelectorAll('.tile').forEach(tile => {
+ tile.style.display = (theme === 'all' || tile.dataset.theme === theme) ? '' : 'none';
+ });
+}
+ 
+// ── TRANSLATION STRINGS ──
+const i18n = {
+ en: {
+ 'nav-archive':'the archive','nav-timeline':'the timeline','nav-listen':'listen','nav-about':'about',
+ 'hero-label':'whose body? whose border?',
+ 'hero-desc':'An unbordered archive of women and the 1947 Partition of British India into India and Pakistan. You will encounter grief, silence, and survival before any religious or national marker is revealed.',
+ 'hero-enter':'enter the archive',
+ 'arc-title':'the collection',
+ 'arc-note':'Hover any tile to reveal attribution. Communal identity — whether a voice is Hindu, Muslim, or Sikh; Indian or Pakistani — is disclosed last. You encounter the person before the category.',
+ 'f-all':'all','f-silence':'silence','f-body':'the body','f-home':'home','f-survival':'survival','f-inheritance':'what is passed down','f-love':'love across the border',
+ 'listen-title':'listen','listen-note':'Audio testimony, poetry recitation, and documentary podcasts. The voice carries what the page cannot.',
+ 'tl-title':'the parallel record','tl-note':'What the state knew and produced — set alongside what the women experienced and knew. Two kinds of knowledge. One event.',
+ 'ab-quote':'"The nation, in its very founding, required the sacrifice of women\'s bodies. This sacrifice was then rendered invisible."',
+ 'ab-p1':'This project takes the 1947 Partition of British India — the administrative division of a subcontinent into India and Pakistan along hastily drawn religious lines — as an onto-epistemological problem: who gets to produce knowledge about what happened, in whose name, and at whose expense?',
+ 'ab-p2':'The archive is structured so that communal identity — whether a voice is Hindu or Muslim, Indian or Pakistani — is disclosed last. You encounter the person before the category.',
+ 'ab-p3':'Existing archival work — Urvashi Butalia\'s oral histories, Ritu Menon and Kamla Bhasin\'s testimonial collections — has been essential in recovering women\'s voices. But these projects present women already sorted. What this project refuses is that sorting.'
+ },
+ ur: {
+ 'nav-archive':'آرکائیو','nav-timeline':'تاریخ','nav-listen':'سنیں','nav-about':'بارے میں',
+ 'hero-label':'کس کا جسم؟ کس کی سرحد؟',
+ 'hero-desc':'1947 کی تقسیمِ ہند کی خواتین کا غیر سرحدی آرکائیو۔ آپ غم، خاموشی اور بقا سے ملیں گے — مذہبی یا قومی شناخت ظاہر ہونے سے پہلے۔',
+ 'hero-enter':'آرکائیو میں داخل ہوں',
+ 'arc-title':'مجموعہ','arc-note':'شناخت آخر میں ظاہر ہوتی ہے۔ پہلے انسان سے ملیں۔',
+ 'f-all':'سب','f-silence':'خاموشی','f-body':'جسم','f-home':'گھر','f-survival':'بقا','f-inheritance':'جو منتقل ہوتا ہے','f-love':'سرحد پار محبت',
+ 'listen-title':'سنیں','listen-note':'زبانی گواہی، نظم، اور دستاویزی پوڈکاسٹ۔',
+ 'tl-title':'متوازی ریکارڈ','tl-note':'ریاست نے کیا جانا — خواتین نے کیا جیا۔',
+ 'ab-quote':'"قوم کی بنیاد خواتین کے جسموں کی قربانی پر تھی۔ اس قربانی کو پھر غیر مرئی کر دیا گیا۔"',
+ 'ab-p1':'یہ منصوبہ 1947 کی تقسیم کو ایک علمیاتی مسئلے کے طور پر دیکھتا ہے: علم کون پیدا کرتا ہے؟ کس کے نام پر؟',
+ 'ab-p2':'آرکائیو اس طرح ترتیب دی گئی ہے کہ فرقہ وارانہ شناخت آخر میں ظاہر ہو۔',
+ 'ab-p3':'موجودہ تاریخی کام ضروری ہے — لیکن خواتین کو پہلے سے درجہ بند کر کے پیش کرتا ہے۔ یہ منصوبہ اس درجہ بندی سے انکار کرتا ہے۔'
+ },
+ hi: {
+ 'nav-archive':'अभिलेखागार','nav-timeline':'समयरेखा','nav-listen':'सुनें','nav-about':'परिचय',
+ 'hero-label':'किसका शरीर? किसकी सीमा?',
+ 'hero-desc':'1947 के विभाजन की महिलाओं का असीमित अभिलेखागार। धार्मिक या राष्ट्रीय पहचान प्रकट होने से पहले आप दुख, मौन और जीवित रहने से मिलेंगे।',
+ 'hero-enter':'अभिलेखागार में प्रवेश करें',
+ 'arc-title':'संग्रह','arc-note':'पहचान अंत में प्रकट होती है। पहले व्यक्ति से मिलें।',
+ 'f-all':'सब','f-silence':'मौन','f-body':'शरीर','f-home':'घर','f-survival':'जीवन','f-inheritance':'जो पीढ़ियों में जाता है','f-love':'सीमा पार प्रेम',
+ 'listen-title':'सुनें','listen-note':'मौखिक गवाही, कविता पाठ और वृत्तचित्र पॉडकास्ट।',
+ 'tl-title':'समानांतर अभिलेख','tl-note':'राज्य ने क्या जाना — महिलाओं ने क्या जिया।',
+ 'ab-quote':'"राष्ट्र की नींव महिलाओं के शरीरों के बलिदान पर थी। इस बलिदान को फिर अदृश्य कर दिया गया।"',
+ 'ab-p1':'यह परियोजना 1947 के विभाजन को एक ज्ञानमीमांसीय समस्या के रूप में देखती है: ज्ञान कौन उत्पन्न करता है?',
+ 'ab-p2':'अभिलेखागार इस तरह बनाया गया है कि सांप्रदायिक पहचान अंत में प्रकट हो।',
+ 'ab-p3':'मौजूदा अभिलेखीय कार्य आवश्यक है — लेकिन महिलाओं को पहले से वर्गीकृत करके प्रस्तुत करता है।'
+ },
+ pa: {
+ 'nav-archive':'ਅਰਕਾਈਵ','nav-timeline':'ਸਮਾਂਰੇਖਾ','nav-listen':'ਸੁਣੋ','nav-about':'ਬਾਰੇ',
+ 'hero-label':'ਕਿਸਦਾ ਸਰੀਰ? ਕਿਸਦੀ ਸੀਮਾ?',
+ 'hero-desc':'1947 ਦੀ ਵੰਡ ਦੀਆਂ ਔਰਤਾਂ ਦਾ ਅਸੀਮਿਤ ਅਰਕਾਈਵ। ਦੁੱਖ, ਚੁੱਪ ਅਤੇ ਬਚਾਅ ਨਾਲ ਮਿਲੋ — ਕਿਸੇ ਵੀ ਧਾਰਮਿਕ ਜਾਂ ਰਾਸ਼ਟਰੀ ਚਿੰਨ੍ਹ ਤੋਂ ਪਹਿਲਾਂ।',
+ 'hero-enter':'ਅਰਕਾਈਵ ਵਿੱਚ ਦਾਖਲ ਹੋਵੋ',
+ 'arc-title':'ਸੰਗ੍ਰਹਿ','arc-note':'ਪਹਿਚਾਣ ਅੰਤ ਵਿੱਚ ਪ੍ਰਗਟ ਹੁੰਦੀ ਹੈ। ਪਹਿਲਾਂ ਵਿਅਕਤੀ ਨੂੰ ਮਿਲੋ।',
+ 'f-all':'ਸਭ','f-silence':'ਚੁੱਪ','f-body':'ਸਰੀਰ','f-home':'ਘਰ','f-survival':'ਬਚਾਅ','f-inheritance':'ਜੋ ਅੱਗੇ ਜਾਂਦਾ ਹੈ','f-love':'ਸੀਮਾ ਪਾਰ ਪਿਆਰ',
+ 'listen-title':'ਸੁਣੋ','listen-note':'ਮੌਖਿਕ ਗਵਾਹੀ ਅਤੇ ਕਵਿਤਾ ਪਾਠ।',
+ 'tl-title':'ਸਮਾਂਤਰ ਰਿਕਾਰਡ','tl-note':'ਰਾਜ ਨੇ ਕੀ ਜਾਣਿਆ — ਔਰਤਾਂ ਨੇ ਕੀ ਜਿਉਂਦਾ।',
+ 'ab-quote':'"ਕੌਮ ਦੀ ਨੀਂਹ ਔਰਤਾਂ ਦੇ ਸਰੀਰਾਂ ਦੀ ਕੁਰਬਾਨੀ ਉੱਤੇ ਸੀ।"',
+ 'ab-p1':'ਇਹ ਪ੍ਰੋਜੈਕਟ 1947 ਦੀ ਵੰਡ ਨੂੰ ਇੱਕ ਗਿਆਨ-ਵਿਗਿਆਨਕ ਸਮੱਸਿਆ ਵਜੋਂ ਦੇਖਦਾ ਹੈ।',
+ 'ab-p2':'ਅਰਕਾਈਵ ਇਸ ਤਰ੍ਹਾਂ ਬਣਾਇਆ ਗਿਆ ਹੈ ਕਿ ਫਿਰਕੂ ਪਹਿਚਾਣ ਅੰਤ ਵਿੱਚ ਪ੍ਰਗਟ ਹੋਵੇ।',
+ 'ab-p3':'ਮੌਜੂਦਾ ਇਤਿਹਾਸਕ ਕੰਮ ਜ਼ਰੂਰੀ ਹੈ — ਪਰ ਔਰਤਾਂ ਨੂੰ ਪਹਿਲਾਂ ਤੋਂ ਵਰਗੀਕ੍ਰਿਤ ਕਰਕੇ ਪੇਸ਼ ਕਰਦਾ ਹੈ।'
+ }
+};
+ 
+function setLang(lang, btn) {
+ document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+ btn.classList.add('active');
+ const strings = i18n[lang] || i18n.en;
+ document.querySelectorAll('[data-i18n]').forEach(el => {
+ const key = el.getAttribute('data-i18n');
+ if (strings[key]) el.textContent = strings[key];
+ });
+ // Set page direction for RTL
+ document.body.style.direction = (lang === 'ur') ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>
